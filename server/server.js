@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import { connectDb } from "./config/db.js";
 import todoRoute from "./routes/todoRoute.js";
+import errorHandler from "./middlewares/errorMiddleware.js";
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -16,6 +17,9 @@ app.get("/", (req, res) => {
 
 // Api routes
 app.use("/api/todos", todoRoute);
+
+// Global error handler
+app.use(errorHandler);
 
 // Start the server
 app.listen(port, async () => {

@@ -3,34 +3,34 @@ import Todo from "../models/todoModel.js";
 // @desc    Get all todos
 // @route   GET /api/todos
 // @access  Public
-export const getTodos = async (req, res) => {
+export const getTodos = async (req, res, next) => {
   try {
     const todos = await Todo.find();
     res.status(200).json(todos);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+  } catch (err) {
+    next(err);
   }
 };
 
 // @desc    Get a single todo
 // @route   GET /api/todos/:id
 // @access  Public
-export const getTodoById = async (req, res) => {
+export const getTodoById = async (req, res, next) => {
   try {
     const todo = await Todo.findById(req.params.id);
     if (!todo) {
       return res.status(404).json({ message: "Todo not found" });
     }
     res.status(200).json(todo);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+  } catch (err) {
+    next(err);
   }
 };
 
 // @desc    Create a new todo
 // @route   POST /api/todos
 // @access  Public
-export const createTodo = async (req, res) => {
+export const createTodo = async (req, res, next) => {
   const { title, description, completed } = req.body;
 
   try {
@@ -42,15 +42,15 @@ export const createTodo = async (req, res) => {
 
     const savedTodo = await newTodo.save();
     res.status(201).json(savedTodo);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+  } catch (err) {
+    next(err);
   }
 };
 
 // @desc    Update a todo
 // @route   PUT /api/todos/:id
 // @access  Public
-export const updateTodo = async (req, res) => {
+export const updateTodo = async (req, res, next) => {
   const { params: { id }, body } =  req;
   try {
     const todo = await Todo.findByIdAndUpdate(id, body, {
@@ -61,23 +61,23 @@ export const updateTodo = async (req, res) => {
     }
 
     res.status(200).json(todo);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+  } catch (err) {
+    next(err);
   }
 };
 
 // @desc    Delete a todo
 // @route   DELETE /api/todos/:id
 // @access  Public
-export const deleteTodo = async (req, res) => {
+export const deleteTodo = async (req, res, next) => {
   try {
     const todo = await Todo.findByIdAndDelete(req.params.id);
     if (!todo) {
       return res.status(404).json({ message: "Todo not found" });
     }
 
-    res.status(200).json({ todo, message: "Todo removed" });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(204).json({message: "Todo removed successfully" });
+  } catch (err) {
+    next(err);
   }
 };

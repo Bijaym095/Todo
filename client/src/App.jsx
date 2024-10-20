@@ -118,8 +118,7 @@ const App = () => {
             </tr>
           </thead>
           <tbody className="text-[0.9375rem] [&_tr_td]:p-2 [&_tr:not(:last-child)_td]:border-b [&_tr:not(:last-child)_td]:border-black/10">
-            {todos.map((todo, index) => {
-              const {_id , title, description, completed } = todo;
+            {todos.map(({_id , title, description, completed }, index) => {
               return (
                 <tr key={index}>
                   <td>{index + 1}</td>
